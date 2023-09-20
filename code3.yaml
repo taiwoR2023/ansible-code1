@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: false
+  ignore_errors: true
+  tasks: 
+    - name: Check uptime
+      command: uptime
+      register: uptime_output
+    - name: Create user
+      user:
+         name: rasidat
+         comment: Rasidat admin
+      when: uptime_output.changed.rc != 100  
+      
+    - name: Display output
+      debug: 
+         var: uptime_output
+
